@@ -16,8 +16,9 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password'])
+            'password' => bcrypt($validatedData['password']), 
         ]);
+
         $token = auth('api')->login($user);
         return $this -> respondWithToken($token);
     }
@@ -27,7 +28,8 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if ($token = $this->guard()->attempt($credentials)) {
-            return $this->respondWithToken($token);
+            $user = $this->guard()->user(); // লগইন করা user
+            return $this->respondWithToken($token, $user);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
@@ -50,12 +52,13 @@ class AuthController extends Controller
         return $this->respondWithToken($this->guard()->refresh());
     }
 
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $user = null)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            'user' => $user,
         ]);
     }
 
