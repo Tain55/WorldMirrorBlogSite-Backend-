@@ -29,4 +29,5 @@ Route::middleware(['auth:api'])->group(function(){
     //blogs
     Route::apiResource('blogs', BlogController::class);
     Route::get('yourblog/{id}', [BlogController::class, 'yourblog'] );
+    Route::delete('deleteblog/{slug}', [BlogController::class, 'destroy']);
 });

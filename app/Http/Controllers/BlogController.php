@@ -64,9 +64,11 @@ class BlogController extends Controller
         return response()->json($blog);
     }
 
-    public function destroy($id)
+    public function destroy($slug)
     {
-        Blog::destroy($id);
+        $blog = Blog::where('slug', $slug) -> firstOrFail();
+        $blog->delete();
+        
         return response()->json(['message' => 'Blog deleted']);
     }
 }
