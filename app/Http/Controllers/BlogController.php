@@ -41,6 +41,13 @@ class BlogController extends Controller
                 ->firstOrFail();
     }
 
+    public function yourblog($id)
+    {
+        return Blog::with('user', 'category')
+                ->where('user_id', $id)
+                ->get();
+    }
+
     public function update(Request $request, $id)
     {
         $blog = Blog::findOrFail($id);
