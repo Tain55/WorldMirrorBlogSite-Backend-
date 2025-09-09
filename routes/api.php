@@ -5,11 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\QuoteController;
 
 
 Route::apiResource('categories', CategoryController::class);
 Route::get('allblogs', [BlogController::class, 'index']);
 Route::get('blogs/{slug}', [BlogController::class, 'show']);
+Route::apiResource('quotes', QuoteController::class);
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
